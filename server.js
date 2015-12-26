@@ -1,8 +1,8 @@
 'use strict';
 
-var config		= require('./config/config'),
-		mongoose	= require('mongoose'),
-		chalk			= require('chalk');
+var config = require('./config/config'),
+	mongoose = require('mongoose'),
+	chalk = require('chalk');
 
 var db = mongoose.connect(config.db, function(err) {
 	if (err) {
