@@ -1,0 +1,24 @@
+{
+  "name": "api-nodejs-token-auth",
+  "version": "1.0.0",
+  "description": "API NodeJS Simple Token Auth - Component-based architecture",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=development nodemon server.js"
+  },
+  "author": "Gui Seek",
+  "license": "THE BEER-WARE LICENSE",
+  "dependencies": {
+    "acl": "^0.4.9",
+    "body-parser": "^1.14.2",
+    "chalk": "^1.1.1",
+    "cors": "^2.7.1",
+    "express": "^4.13.3",
+    "glob": "^6.0.2",
+    "jsonwebtoken": "^5.4.1",
+    "lodash": "^3.10.1",
+    "mongoose": "^4.3.4",
+    "morgan": "^1.6.1"
+  }
+}
