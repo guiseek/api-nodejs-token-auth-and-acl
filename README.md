@@ -26,3 +26,5 @@ Go to [/api/users](http://localhost:3000/api/users) with GET method to list user
 This seed has the complete CRUD, using the methods GET, POST, PUT and DELETE, to list, create, change and remove users, respectively.
 
 Enjoy and collaborate with the project. :)
+
+[About me](http://guiseek.github.io)
