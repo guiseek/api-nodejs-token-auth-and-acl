@@ -1,7 +1,7 @@
 'use strict';
 
 var jwt = require('jsonwebtoken'),
-    User = require('../models/user.models');
+  User = require('../models/user.models');
 
 var secret = 'api-simple';
 
@@ -38,16 +38,16 @@ exports.verify = function(req, res, next) {
   var token = req.body.token || req.params.token || req.headers['authorization'];
   if (token) {
     jwt.verify(token, secret, function(err, decoded) {
-			if (err) {
-				res.status(400).json({ message: 'Failed to authenticate token.' });
+      if (err) {
+        res.status(400).json({ message: 'Failed to authenticate token.' });
         return;
-			}
-			req.decoded = decoded;
-			next();
-		});
+      }
+      req.decoded = decoded;
+      next();
+    });
   } else {
-		res.status(403).json({
-			message: 'No token provided.'
-		});
-	}
+    res.status(403).json({
+      message: 'No token provided.'
+    });
+  }
 };

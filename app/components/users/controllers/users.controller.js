@@ -1,20 +1,20 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    User = require('../models/user.models');
+  User = require('../models/user.models');
 
 exports.setup = function(req, res) {
   var demo = new User({
-		name: 'Demo',
-		username: 'demo',
-		password: 'demo',
-		email: 'demo@demo.com',
-		roles: ['admin']
-	});
-	demo.save(function(err) {
-		if (err) throw err;
-		res.status(200).json({ message: 'User saved successfully', user: demo });
-	});
+    name: 'Demo',
+    username: 'demo',
+    password: 'demo',
+    email: 'demo@demo.com',
+    roles: ['admin']
+  });
+  demo.save(function(err) {
+    if (err) throw err;
+    res.status(200).json({ message: 'User saved successfully', user: demo });
+  });
 };
 exports.findAll = function(req, res) {
   User.find({}, function(err, users) {

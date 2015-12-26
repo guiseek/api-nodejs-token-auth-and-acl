@@ -16,7 +16,7 @@ module.exports = function(api) {
 		.put(users.update)
 		.delete(users.delete);
 
-  api.route('/setup').get(users.setup);
+	api.route('/setup').get(users.setup);
 	
 	api.param('id', users.userByID);
 };

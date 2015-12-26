@@ -1,11 +1,11 @@
 'use strict';
 
 var express = require('express'),
-		morgan = require('morgan'),
-		bodyParser = require('body-parser'),
-		config = require('./config'),
-		path = require('path'),
-		cors		= require('cors');
+	morgan = require('morgan'),
+	bodyParser = require('body-parser'),
+	config = require('./config'),
+	path = require('path'),
+	cors		= require('cors');
 
 module.exports = function(db) {
 	var app = express();
@@ -27,22 +27,22 @@ module.exports = function(db) {
 		require(path.resolve(modelPath));
 	});
 
-  config.getGlobbedFiles('./app/components/*/policies/*.js').forEach(function(policyPath) {
-    require(path.resolve(policyPath)).invokeRolesPolicies();
-  });
+	config.getGlobbedFiles('./app/components/*/policies/*.js').forEach(function(policyPath) {
+		require(path.resolve(policyPath)).invokeRolesPolicies();
+	});
 
 	var api = express.Router();
 
-  require(path.resolve('./app/components/users/routes/authenticate.routes'))(api);
+	require(path.resolve('./app/components/users/routes/authenticate.routes'))(api);
 
 	var authenticate = require(path.resolve('./app/components/users/controllers/authenticate.controller'));
-  api.use(authenticate.verify);
+	api.use(authenticate.verify);
 
 	config.getGlobbedFiles('./app/components/*/routes/*.js').forEach(function(routePath) {
 		require(path.resolve(routePath))(api);
 	});
 
-  app.use('/api', api);
+	app.use('/api', api);
 
 	app.use(function(err, req, res, next) {
 		if (!err) return next();
