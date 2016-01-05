@@ -5,6 +5,19 @@ var jwt = require('jsonwebtoken'),
 
 var secret = 'api-simple';
 
+exports.setup = function(req, res) {
+  var demo = new User({
+    name: 'Demo',
+    username: 'demo',
+    password: 'demo',
+    email: 'demo@demo.com',
+    roles: ['admin']
+  });
+  demo.save(function(err) {
+    if (err) throw err;
+    res.status(200).json({ message: 'User saved successfully', user: demo });
+  });
+};
 exports.signin = function(req, res) {
   if (!req.body.username) {
     res.status(400).json({ message: 'Username required'});
@@ -17,20 +30,28 @@ exports.signin = function(req, res) {
   User.findOne({
     username: req.body.username
   }, function(err, user) {
-    if (err) throw err;
+    if (err) {
+      res.status(500).json({ message: err});
+      return;
+    }
     if (!user) {
       res.status(404).json({ message: 'Authentication failed, try again.'});
       return;
     }
-    if (user.password != req.body.password) {
-      res.status(401).json({ message: 'Authentication failed, try again.'});
-      return;
-    }
-    var token = jwt.sign(user, secret);
-    res.json({
-      user: user,
-      secret: secret,
-      token: token
+    user.comparePassword(req.body.password, function(err, valid) {
+      if (err) {
+        res.status(500).json({ message: err});
+        return;
+      }
+      if (!valid) {
+        res.status(401).json({ message: 'Authentication failed, try again.'});
+        return;
+      }
+      var token = jwt.sign(user, secret);
+      res.status(200).json({
+        user: user,
+        token: token
+      });
     });
   });
 };
@@ -40,10 +61,11 @@ exports.verify = function(req, res, next) {
     jwt.verify(token, secret, function(err, decoded) {
       if (err) {
         res.status(400).json({ message: 'Failed to authenticate token.' });
-        return;
+        // return;
+      } else {
+        req.decoded = decoded;
+        next();
       }
-      req.decoded = decoded;
-      next();
     });
   } else {
     res.status(403).json({

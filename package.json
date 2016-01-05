@@ -11,6 +11,7 @@
   "license": "THE BEER-WARE LICENSE",
   "dependencies": {
     "acl": "^0.4.9",
+    "bcryptjs": "^2.3.0",
     "body-parser": "^1.14.2",
     "chalk": "^1.1.1",
     "cors": "^2.7.1",
