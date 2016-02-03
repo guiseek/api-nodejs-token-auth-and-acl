@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
   User = require('../models/user.models');
 
 exports.findAll = function(req, res) {
-  User.find({}, function(err, users) {
+  User.find({}, '-password', function(err, users) {
     res.json(users);
   });
 };
@@ -28,9 +28,11 @@ exports.update = function (req, res) {
   var user = req.user;
   user.name = req.body.name;
   user.username = req.body.username;
-  user.password = req.body.password;
   user.email = req.body.email;
   user.roles = req.body.roles;
+  if (req.body.password) {
+    user.password = req.body.password;
+  }
 
   user.save(function (err) {
     if (err) {
@@ -65,7 +67,6 @@ exports.userByID = function (req, res, next, id) {
       message: 'User is invalid'
     });
   }
-
   User.findById(id, function (err, user) {
     if (err) {
       next(err);
@@ -73,8 +74,9 @@ exports.userByID = function (req, res, next, id) {
       res.status(404).json({
         message: 'No user with that identifier has been found'
       });
+    } else {
+        req.user = user;
+        next();
     }
-    req.user = user;
-    next();
   });
 };

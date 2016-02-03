@@ -35,7 +35,7 @@ exports.signin = function(req, res) {
       return;
     }
     if (!user) {
-      res.status(404).json({ message: 'Authentication failed, try again.'});
+      res.status(401).json({ message: 'Authentication failed, try again.'});
       return;
     }
     user.comparePassword(req.body.password, function(err, valid) {
@@ -50,7 +50,8 @@ exports.signin = function(req, res) {
       var token = jwt.sign(user, secret);
       res.status(200).json({
         user: user,
-        token: token
+        token: token,
+        rememberme: req.body.rememberme
       });
     });
   });
@@ -63,7 +64,7 @@ exports.verify = function(req, res, next) {
         res.status(400).json({ message: 'Failed to authenticate token.' });
         // return;
       } else {
-        req.decoded = decoded;
+        req.decoded = decoded._doc;
         next();
       }
     });

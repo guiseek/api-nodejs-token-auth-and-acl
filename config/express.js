@@ -54,12 +54,12 @@ module.exports = function(db) {
 		});
 	});
 
-	app.use(function(req, res) {
-		res.status(404).json({
-			url: req.originalUrl,
-			error: 'Not Found'
-		});
-	});
+	// app.use(function(req, res) {
+	// 	res.status(404).json({
+	// 		url: req.originalUrl,
+	// 		error: 'Not Found'
+	// 	});
+	// });
 
 	return app;
 };
