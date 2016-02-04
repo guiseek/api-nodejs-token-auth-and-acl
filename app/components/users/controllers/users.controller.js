@@ -12,7 +12,11 @@ exports.find = function (req, res) {
     res.json(req.user);
 };
 exports.create = function (req, res) {
-    var user = new User(req.body);
+    var user = req.body;
+    if (user.roles.length == 0) {
+        user.roles = ['user'];
+    }
+    var user = new User(user);
 
     user.save(function (err) {
         if (err) {
@@ -75,8 +79,8 @@ exports.userByID = function (req, res, next, userId) {
     }
     User.findById(userId, function (err, user) {
         if (err) return next(err);
-        if (!brewery) return next(new Error('Failed to load Brewery ' + breweryId));
-        req.brewery = brewery;
+        if (!user) return next(new Error('Failed to load Brewery ' + userId));
+        req.user = user;
         next();
     });
 };
