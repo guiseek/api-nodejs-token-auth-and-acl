@@ -10,11 +10,11 @@ module.exports = function(api) {
 		.get(users.findAll)
 		.post(users.create);
 
-	api.route('/users/:id')
+	api.route('/users/:userId')
 		.all(usersPolicy.isAllowed)
 		.get(users.find)
 		.put(users.update)
 		.delete(users.delete);
 
-	api.param('id', users.userByID);
+	api.param('userId', users.userByID);
 };

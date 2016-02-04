@@ -8,25 +8,25 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/users',
+      resources: '/breweries',
       permissions: '*'
     }, {
-      resources: '/users/:userId',
+      resources: '/breweries/:breweryId',
       permissions: '*'
     }, {
-      resources: '/users/search/:query',
+      resources: '/breweries/search/:query',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/users',
+      resources: '/breweries',
       permissions: ['get','post']
     }, {
-      resources: '/users/:userId',
+      resources: '/breweries/:breweryId',
       permissions: ['get','put','delete']
     }, {
-      resources: '/api/users/search/:query',
+      resources: '/api/breweries/search/:query',
       permissions: ['get']
     }]
   }]);
@@ -34,10 +34,11 @@ exports.invokeRolesPolicies = function () {
 
 exports.isAllowed = function (req, res, next) {
   var roles = (req.decoded) ? req.decoded.roles : ['guest'];
-//   if (req.decoded._id == req.user._id) {
+//   if (req.decoded._id == req.brewery.user._id) {
 //     next();
 //   }
 
+    console.log(roles);
   acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
     if (err) {
       res.status(500).json({message: 'Unexpected authorization error'});
@@ -46,7 +47,7 @@ exports.isAllowed = function (req, res, next) {
         next();
       } else {
         res.status(403).json({
-          message: 'User is not authorized'
+          message: 'Brewery is not authorized'
         });
       }
     }
